@@ -1,0 +1,147 @@
+import sys
+import csv
+import numpy as np
+import pandas as pd
+
+
+def neural(X_train,Y_train,L_rate,Iteration):
+    w_a_h1 = -0.3
+    w_b_h1 = 0.4
+    w_a_h2 = -0.1
+    w_b_h2 = -0.4
+    w_a_h3 = 0.2
+    w_b_h3 = 0.1
+    w_h1_o = 0.1
+    w_h2_o = 0.3
+    w_h3_o = -0.4
+    w_bias_h1 = 0.2
+    w_bias_h2 = -0.5
+    w_bias_h3 = 0.3
+    w_bias_o = -0.1
+
+
+i=0
+   while i<11:
+   print('-', end=" ")
+i=i+1
+
+print(round(w_bias_h1, 5), end=" ")
+    print(round(w_a_h1, 5), end=" ")
+    print(round(w_b_h1, 5), end=" ")
+
+    print(round(w_bias_h2, 5), end=" ")
+    print(round(w_a_h2, 5), end=" ")
+    print(round(w_b_h2, 5), end=" ")
+
+    print(round(w_bias_h3, 5), end=" ")
+    print(round(w_a_h3, 5), end=" ")
+    print(round(w_b_h3, 5), end=" ")
+
+    print(round(w_bias_o, 5), end=" ")
+    print(round(w_h1_o, 5), end=" ")
+    print(round(w_h2_o, 5), end=" ")
+    print(round(w_h3_o, 5))
+
+       #i=0
+       # while i< int(Iterations):
+        for _ in range(Iterations):
+           for j in range(len(X_train)):
+            
+	    
+            #calculating outputs for sigmoids
+
+            sigmoid1= w_a_h1*X_train[j][0] + w_b_h1*X_train[j][1] + w_bias_h1 
+            output_h1 = 1/(1+np.exp(-sigmoid1))
+
+            sigmoid2 = w_a_h2*X_train[j][0] + w_b_h2*X_train[j][1] + w_bias_h2
+            output_h2 = 1/(1+np.exp(-sigmoid2))
+
+            sigmoid3 = w_a_h3*X_train[j][0] + w_b_h3*X_train[j][1] + w_bias_h3
+            output_h3 = 1/(1+np.exp(-sigmoid3))
+
+            total_output = output_h1 *w_h1_o + output_h2*w_h2_o + output_h3*w_h3_o + w_bias_o
+            out = 1/(1+np.exp(-total_output))
+
+
+	    error = (Y_train[i]-out) #(t(d)-o(d))
+
+           #calculating delta values for all
+            delta_o=total_output*(1-total_output)*error
+            delta_h1=output_h1*(1-output_h1)*(w_h1_o*delta_o)
+            delta_h2=output_h2*(1-output_h2)*(w_h2_o*delta_o)
+            delta_h3=output_h3*(1-output_h3)*(w_h3_o*delta_o)
+
+          #modified weights for all nodes and outputs
+     
+  	    w_a_h1 = w_a_h1 + L_rate*delta_h1*X_train[j][0]
+            w_b_h1 = w_b_h1 + L_rate*delta_h1*X_train[j][1]
+            w_bias_h1 = w_bias_h1 + L_rate*delta_h1
+            
+            
+            w_a_h2 = w_a_h2 + L_rate*delta_h2*X_train[j][0]
+            w_b_h2 = w_b_h2 + L_rate*delta_h2*X_train[j][1]
+            w_bias_h2 = w_bias_h2 + L_rate*delta_h2
+            
+            
+            w_a_h3 = w_a_h3 + L_rate*delta_h3*X_train[j][0]
+            w_b_h3 = w_b_h3 + L_rate*delta_h3*X_train[j][1]
+            w_bias_h3 = w_bias_h3 + L_rate*delta_h3
+
+           
+            w_h1_o=w_h1_o+learning_rate*output_h1*delta_o
+            w_h2_o=w_h2_o+learning_rate*output_h2*delta_o
+            w_h3_o=w_h3_o+learning_rate*output_h3*delta_o
+            w_bias_o=w_bias_o+learning_rate*1*delta_o
+          
+
+       print(X_train[i][0], end=" ")
+            print(X_train[j][1], end=" ")
+            print(round(out_h1, 5), end=" ")
+            print(round(out_h2, 5), end=" ")
+            print(round(out_h3, 5), end=" ")
+            print(round(out, 5), end=" ")
+            print(int(Y_train[j]), end=" ")
+
+            print(round(delta_h1, 5), end=" ")
+            print(round(delta_h2, 5), end=" ")
+            print(round(delta_h3, 5), end=" ")
+            print(round(delta_o, 5), end=" ")
+
+            print(round(w_bias_h1, 5), end=" ")
+            print(round(w_a_h1, 5), end=" ")
+            print(round(w_b_h1, 5), end=" ")
+
+            print(round(w_bias_h2, 5), end=" ")
+            print(round(w_a_h2, 5), end=" ")
+            print(round(w_b_h2, 5), end=" ")
+
+            print(round(w_bias_h3, 5), end=" ")
+            print(round(w_a_h3, 5), end=" ")
+            print(round(w_b_h3, 5), end=" ")
+
+            print(round(w_bias_o, 5), end=" ")
+            print(round(w_h1_o, 5), end=" ")
+            print(round(w_h2_o, 5), end=" ")
+            print(round(w_h3_o, 5))
+
+    # i=i+1
+
+if __name__ == "__main__":
+    expected_args = ["--data","--eta","--iterations"]
+    arg_len = len(sys.argv)
+    info = []
+
+    for i in range(len(expected_args)):
+        for j in range(1, len(sys.argv)):
+            if expected_args[i] == sys.argv[j] and sys.argv[j + 1]:
+                info.append(sys.argv[j + 1])
+
+
+    data = pd.read_csv(info[0], header=None)
+    L_rate=info[1]
+    Iterations=info[2]
+    X_train = data.iloc[:,:-1].values
+    Y_train = data.iloc[:, -1].values
+
+            
+          neural(X_train,Y_train,float(L_rate),Iterations)          
